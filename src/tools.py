@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-
 def find_columns(columns, keyword):
     """retains and returns the columns (list) that contain the keyword (string).
     
