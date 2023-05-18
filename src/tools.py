@@ -1,6 +1,8 @@
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import keras
+
 
 def find_columns(columns, keyword):
     """retains and returns the columns (list) that contain the keyword (string).
@@ -17,6 +19,18 @@ def find_columns(columns, keyword):
     print(f'Found {len(retained_cols)} columns with keyword {keyword}: {retained_cols}')
     
     return retained_cols
+
+def matchup_reformat(matchup):
+    if matchup.find("@") != -1:
+        teamAbbr = matchup.split("@")[0]
+        opptAbbr = matchup.split("@")[1]
+        loc = "away"
+    else:
+        teamAbbr = matchup.split("vs.")[0]
+        opptAbbr = matchup.split("vs.")[1]
+        loc = "home"
+
+    return teamAbbr, opptAbbr,loc
 
 def OU(OUline, pts):
     """
