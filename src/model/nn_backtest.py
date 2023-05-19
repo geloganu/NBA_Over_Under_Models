@@ -58,6 +58,7 @@ for i in tqdm(range(0,n)):
             epochs=100, 
             validation_split=0.1, 
             batch_size=100,
+            verbose=0,
             callbacks=[callback])
 
     X_test = X[n-i]
