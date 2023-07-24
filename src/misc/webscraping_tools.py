@@ -46,4 +46,3 @@ def request_data(url, headers, params, format):
         return frame.to_dict()
     else:
         raise Exception("Unknown format")
-    

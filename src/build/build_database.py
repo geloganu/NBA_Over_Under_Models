@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 
 import requests
@@ -16,7 +17,6 @@ request_headers = 'Accept|*/*&Accept-Encoding|gzip,deflate,br&Accept-Language|en
 request_headers = clean_api_params(request_headers,"|","&")
 
 seasons = season_range(2017,2022)
-
 
 #loop through season range and retrieve payload. Dataframe is cleaned and then creates/updates SQL database for "boxscore" table.
 print("================================")
@@ -42,15 +42,19 @@ for season in tqdm.tqdm(seasons):
     frame[["TEAM_ABBREVIATION","TEAM_NAME","MATCHUP"]] = frame.apply(lambda row: pd.Series(matchup_reformat(row["MATCHUP"])), axis=1) 
     frame = frame.rename(columns={"TEAM_ABBREVIATION":"teamAbbr","TEAM_NAME":"opptAbbr","MATCHUP":"location","GAME_DATE":"game_date"})
     
+    #format cleaning up
     frame["game_date"] = frame['game_date'].apply(lambda date: str(date).replace("T"," "))
+    frame['teamAbbr'] = frame['teamAbbr'].apply(lambda row: row.replace(" ",""))
     frame['teamAbbr'] = frame['teamAbbr'].apply(lambda row: row.replace(" ",""))
     frame['TEAM_ID'] = frame['TEAM_ID'].astype(str)
     
     frame = frame.sort_values(by=["game_date"],ascending=False).reset_index(drop=True)
     
-    update_database("./src/sql/database.db",f"boxscore {season}",frame)
+    update_database("./src/sql/database.db",f"boxscore_{season}",frame)
 
 print('Success!\n')    
+    
+    
     
 #retreive historical and current odds data from rotowire.com/betting/nba/. Data is cleaned and formatted before creating/updated SQL database in table "odds"
 url = "https://www.rotowire.com/betting/nba/tables/games-archive.php"

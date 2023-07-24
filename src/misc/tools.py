@@ -5,7 +5,7 @@ import keras
 
 def season_format(season):
     """
-    Returns season in terms of "2019-20" format
+    Returns season in terms of "2019_20" format
     
     :season: (int) season year 
     """

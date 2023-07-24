@@ -8,16 +8,19 @@ import sql_tools
 
 #import trailing dataset and create new column indicating O/U result. This will be the classification set.
 path_to_data = "./src/sql/"
-data = sql_tools.read_database(path_to_data+"trailing_database.db", "5_game_trailing")
+
+ntrail = int(input('Trail dataset (enter int): '))
+
+data = sql_tools.read_database(path_to_data+"trailing_database.db", f"{ntrail}_game_trailing")
 data = data[data['O/U_line']!='']
 data['O/U_result'] = data.apply(lambda row: tools.OU(row['O/U_line'],float(row['total'])),axis=1)
 
 X,y = tools.model_preprocessing(data,("2016-01-10","2023-12-12"))
 
 #backtesting 
-n = 5
-n_estimators = 25
-n_trials = 2
+n = 15
+n_estimators = 50
+n_trials = 10
 OU_results = list(y[-n:])
 
 acc_vals = []

@@ -34,7 +34,9 @@ def update_database(db_file,table,new_frame):
     :table: (str) SQL table name
     :new_frame: (pd.DataFrame) frame containing new data
     """
+    #connect to sql 
     conn = connect_database(db_file)
+    cursor = conn.cursor()
 
     query = f"SELECT name FROM sqlite_master WHERE type='table' AND name='{table}'"
     result = pd.read_sql_query(query, conn).shape[0]>0
@@ -47,18 +49,18 @@ def update_database(db_file,table,new_frame):
         return
     
     
-    print(f"Table {table} found in database {db_file}. Updating table...")
+    #print(f"Table {table} found in database {db_file}. Updating table...")
     
     new_frame.to_sql('temp_table', conn, if_exists='replace',index=False)
     
     #not working as expected
     conn.execute(f'''
-        INSERT INTO {table} 
+        INSERT INTO '{table}' 
         SELECT * FROM temp_table 
         WHERE NOT EXISTS (
-            SELECT * FROM {table} 
-            WHERE {table}.teamAbbr = temp_table.teamAbbr 
-            AND {table}.teamAbbr = temp_table.teamAbbr
+            SELECT * FROM '{table}' 
+            WHERE '{table}'.teamAbbr = temp_table.teamAbbr 
+            AND '{table}'.teamAbbr = temp_table.teamAbbr
         )
     ''')
 
@@ -69,5 +71,21 @@ def update_database(db_file,table,new_frame):
     conn.commit()
     conn.close()
 
+def read_table_names(db_file):
+    """
+    Retrieves the names of the tables in the database
     
+    :db_file: (str) database file name
+    """
+    try:
+        conn = sqlite3.connect(db_file)
+        cursor = conn.cursor()
+        cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table';")
+        tables = cursor.fetchall()
+        return[table[0] for table in tables]
+    except sqlite3.Error as e:
+        print(f"Error: {e}")
+    finally:
+        if conn:
+            conn.close()
     

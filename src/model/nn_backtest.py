@@ -13,8 +13,11 @@ import tools
 import sql_tools
 
 #importing file from SQL database
+
+ntrail = int(input('Trail dataset (enter int): '))
+
 path_to_data = "./src/sql/"
-data = sql_tools.read_database(path_to_data+"trailing_database.db", "5_game_trailing")
+data = sql_tools.read_database(path_to_data+"trailing_database.db", f"{ntrail}_game_trailing")
 data = data[data['O/U_line']!='']
 data['O/U_result'] = data.apply(lambda row: tools.OU(row['O/U_line'],float(row['total'])),axis=1)
 
