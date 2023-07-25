@@ -8,14 +8,14 @@ from nba_stats_retrieval import *
 from build_trailing_database import *
 
 sys.path.insert(0, './src/misc/')
-from webscrapping_tools import *
+from webscraping_tools import *
 
 
 def main():
     db = "./src/sql/database.db"
     trailing_db = "./src/sql/trailing.db"
-    main_menu_title = "  Main Menu.\n  Press Q or Esc to quit. \n"
-    main_menu_items = ['Build/Update Database', 'Run Model Backtest','Quit']
+    main_menu_title = "===============================\nNBA Over/Under Prediction Model\n=============================== \nMain Menu.\nPress Q or Esc to quit. \n"
+    main_menu_items = ['Build/Update Database', 'Run Model Backtest','Info Page', 'Quit']
     main_menu_cursor = "> "
     main_menu_cursor_style = ("fg_red", "bold")
     main_menu_style = ("bg_red", "fg_yellow")
@@ -31,7 +31,7 @@ def main():
         clear_screen=True,
     )
     build_menu_title = "  Build/Update Database Menu.\n  Press Q or Esc to back to main menu. \n"
-    build_menu_items = ["Update Boxscores", "Build Database (stats.nba.com)","Build Trailing Boxscore Data","Back selected"]
+    build_menu_items = ["Update Boxscores", "Build Database (stats.nba.com)","Build Trailing Boxscore Data","Back"]
     build_menu_back = False
     build_menu = TerminalMenu(
         build_menu_items,
@@ -44,11 +44,24 @@ def main():
     )
     
     backtest_menu_title = "  Backtesting Menu.\n  Press Q or Esc to back to main menu. \n"
-    backtest_menu_items = ["Backtest Neural Network Model", "Backtest Random Forest Model","Back selected"]
+    backtest_menu_items = ["Backtest Neural Network Model", "Backtest Random Forest Model","Back"]
     backtest_menu_back = False
     backtest_menu = TerminalMenu(
         backtest_menu_items,
         title=backtest_menu_title,
+        menu_cursor=main_menu_cursor,
+        menu_cursor_style=main_menu_cursor_style,
+        menu_highlight_style=main_menu_style,
+        cycle_cursor=True,
+        clear_screen=True,
+    )
+    
+    info_menu_title = "  Info Page\n  Press Q or Esc to back to main menu. \n\nTo initialize the boxscore, select 'Build/Update Database' page from the main menu and run \nthe 'Build Database (stats.nba.com)' option followed by the 'Build Trailing Boxscore Data' \noption. To create a trailing boxscore dataset, run the 'Build Trailing Boxscore Data' with \nthe desired number of games trailed by. \n \nTo run backtests and simulation, enter the 'Backtesting Menu' and select the desired model."
+    info_menu_items = ["Back"]
+    info_menu_back = False
+    info_menu = TerminalMenu(
+        info_menu_items,
+        title=info_menu_title,
         menu_cursor=main_menu_cursor,
         menu_cursor_style=main_menu_cursor_style,
         menu_highlight_style=main_menu_style,
@@ -117,16 +130,26 @@ def main():
                 backtest_sel = backtest_menu.show()
                 if backtest_sel == 0:
                     
-                    print("Edit Config Selected")
+                    print("To implement")
                     time.sleep(2)
                 elif backtest_sel == 1:
-                    print("Save Selected")
+                    print("To implement")
                     time.sleep(2)
                 elif backtest_sel == 2 or backtest_sel == None:
                     backtest_menu_back = True
                     print("Back Selected")
-            backtest_menu_back = False
-        elif main_sel == 2 or main_sel == None:
+            backtest_menu_back = False\
+                
+        #info page
+        elif main_sel == 2:
+            while not info_menu_back:
+                info_sel = info_menu.show()
+                if info_sel == 0 or info_sel == None:
+                    info_menu_back = True
+                    print("Back Selected")
+            info_menu_back = False
+            
+        elif main_sel == 3 or main_sel == None:
             main_menu_exit = True
             print("Quit Selected")
 
