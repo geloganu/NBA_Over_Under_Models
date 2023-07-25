@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 import sys
 import time
+from simple_term_menu import TerminalMenu
 
 sys.path.insert(0, './src/build/')
 from nba_stats_retrieval import *
 from build_trailing_database import *
-from simple_term_menu import TerminalMenu
+
+sys.path.insert(0, './src/misc/')
+from webscrapping_tools import *
+
 
 def main():
     db = "./src/sql/database.db"
