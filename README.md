@@ -28,7 +28,7 @@ To initialize the boxscore, select 'Build/Update Database' page from the main me
 
 To create a trailing boxscore dataset, run the 'Build Trailing Boxscore Data' with the desired number of games trailed by. To update the boxscore dataset with the most current game data, run 'Update Boxscores'. 
 
-To fine tune the model, enter the 'Run Model Backtest' menu to fine tune the desired ML model. This will run a simulation for the entire season desired. For example, you may run the model for the entirety of the 2022 season and test the accuracy of the prediction output as the season is played out. You can also change various parameters of the model.
+(Work in progress) To fine tune the model, enter the 'Run Model Backtest' menu to fine tune the desired ML model. This will run a simulation for the entire season desired. For example, you may run the model for the entirety of the 2022 season and test the accuracy of the prediction output as the season is played out. You can also change various parameters of the model.
 
 ## License
 
